@@ -3,11 +3,11 @@ import Navbar from '../Components/Navbar';
 
 function About() {
   const teamMembers = [
-    { name: "Tanishq Rathi", role: "Full Stack Developer", image: "tanishq.png" },
-    { name: "Anuj Kaushik", role: "Frontend Developer", image: "anuj.png" },
-    { name: "Anas Fareedi", role: "Backend Developer", image: "anas.png" },
+    { name: "Tanishq Rathi", role: "Full Stack Developer", image: "tanishq.jpg" },
+    { name: "Anuj Kaushik", role: "Frontend Developer", image: "Anuj.jpg" },
+    { name: "Anas Fareedi", role: "Backend Developer", image: "anas.jpg" },
     { name: "Amrit Arora", role: "UI/UX Designer", image: "amrit.png" },
-    { name: "Anshika Chauhan", role: "Quality Assurance", image: "anshika.png" },
+    { name: "Anshika Chauhan", role: "Quality Assurance", image: "anshika.jpg" },
   ];
 
   return (
