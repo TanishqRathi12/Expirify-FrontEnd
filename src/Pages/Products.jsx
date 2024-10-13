@@ -34,6 +34,7 @@ function Products() {
   );
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'Not Provided';
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const date = new Date(dateString);
     return date.toLocaleDateString(undefined, options);
@@ -70,7 +71,7 @@ function Products() {
               <tbody>
                 {filteredProducts.map(product => (
                   <tr key={product.id} className="hover:bg-gray-100">
-                    <td className="py-2 px-4 border-b border-gray-200">{product.product_name}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">{product.product_name || 'Not Provided'}</td>
                     <td className="py-2 px-4 border-b border-gray-200">{formatDate(product.mfg_date)}</td>
                     <td className="py-2 px-4 border-b border-gray-200">{formatDate(product.expiry_date)}</td>
                   </tr>
