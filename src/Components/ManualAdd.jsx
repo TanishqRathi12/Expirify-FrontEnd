@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from '../Components/Axios';
 
-const ManualAdd = ({ onAddProduct }) => {
+const ManualAdd = () => {
     const [productName, setProductName] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [manufacturingDate, setManufacturingDate] = useState('');
@@ -33,11 +33,6 @@ const ManualAdd = ({ onAddProduct }) => {
 
                 if (response.status === 201) {
                     // Successfully added product
-                    onAddProduct({ 
-                        name: productName, 
-                        expiryDate, 
-                        manufacturingDate: manufacturingDate || 'Not Provided' // Show "Not Provided" if manufacturingDate is empty
-                    });
                     setProductName('');
                     setExpiryDate('');
                     setManufacturingDate('');
