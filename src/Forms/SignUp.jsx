@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/Authcontext";
 
-const Signup = () => {
+const SignApp = () => {
   const [formData, setFormData] = useState({
     phoneNumber: "",
     email: "",
@@ -155,4 +155,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignApp;
