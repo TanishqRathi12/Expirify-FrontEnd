@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../Components/Axios";
+import { useAuth } from "../Context/Authcontext";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
+  
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false); // State for loading
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,12 +30,27 @@ const Login = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
-      console.log("Login successful", formData);
-      setFormData({ email: "", password: "" });
+      setLoading(true); // Set loading to true
+      setErrors({}); // Clear previous errors
+      try {
+        const response = await axios.post("/login", formData);
+        localStorage.setItem("token", response.data.token);
+        console.log("Login successful");
+        login();
+        navigate("/");
+        setFormData({ email: "", password: "" });
+      } catch (error) {
+        setLoading(false); // Reset loading state
+        if (error.response && error.response.data) {
+          setErrors({ apiError: error.response.data.message }); // Display API error message
+        } else {
+          setErrors({ apiError: "An error occurred. Please try again." });
+        }
+      }
     } else {
       setErrors(formErrors);
     }
@@ -40,6 +60,15 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-800">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md dark:bg-gray-900">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-900 dark:text-white">Log In</h2>
+
+        {/* Warning Message */}
+        <p className="mb-4 text-red-500 text-sm text-center">
+          ⚠️ You must log in or sign up to use our services!
+        </p>
+
+        {/* Display API error message if present */}
+        {errors.apiError && <p className="text-red-500 text-xs italic mb-2">{errors.apiError}</p>}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -75,9 +104,10 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full p-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 transition duration-200"
+            className={`w-full p-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 transition duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={loading} // Disable button when loading
           >
-            Log In
+            {loading ? 'Logging In...' : 'Log In'}
           </button>
         </form>
         <p className="mt-4 text-center text-gray-600 dark:text-gray-300">

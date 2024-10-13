@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import QrScanner from 'react-qr-scanner';
+import axios from '../Components/Axios';
 
 function ScanButton() {
   const [scanning, setScanning] = useState(false); // Manage scanning state
@@ -82,7 +83,7 @@ function ScanButton() {
           className="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-4 px-6 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 mx-2"
           onClick={openCamera} // Open the camera on click
         >
-          Scan to Save the Product
+          Scan to Add the Product
         </button>
       )}
 
