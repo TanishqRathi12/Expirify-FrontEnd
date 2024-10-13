@@ -13,10 +13,10 @@ function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        
-        const decoded = jwtDecode(localStorage.getItem('token'))
-        const user = decoded.id
-        const response = await axios.get(`/${user}/products`)
+        const decoded = jwtDecode(localStorage.getItem('token'));
+        const user = decoded.id;
+        const response = await axios.get(`/${user}/products`);
+        console.log(response.data);
         setProducts(response.data);
       } catch (error) {
         setError('There was an error fetching the products!');
@@ -29,11 +29,15 @@ function Products() {
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(product => 
+    product.product_name && product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
-  
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, options);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -66,9 +70,9 @@ function Products() {
               <tbody>
                 {filteredProducts.map(product => (
                   <tr key={product.id} className="hover:bg-gray-100">
-                    <td className="py-2 px-4 border-b border-gray-200">{product.name}</td>
-                    <td className="py-2 px-4 border-b border-gray-200">{product.mfgDate}</td>
-                    <td className="py-2 px-4 border-b border-gray-200">{product.expiryDate}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">{product.product_name}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">{formatDate(product.mfg_date)}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">{formatDate(product.expiry_date)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -78,7 +82,7 @@ function Products() {
           <p className="text-center text-lg font-semibold text-gray-700">No products found!</p>
         )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
