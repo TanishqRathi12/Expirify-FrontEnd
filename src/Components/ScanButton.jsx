@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import QrScanner from "react-qr-scanner";
+import axios from "axios"; // Import Axios
 
 function ScanButton() {
   const [scanning, setScanning] = useState(false); // Manage scanning state
@@ -36,19 +37,27 @@ function ScanButton() {
     try {
       setSending(true); // Indicate the capture process is ongoing
       const token = localStorage.getItem("token"); // Replace with how you manage tokens
-      const response = await fetch("https://fastapi-backend-ngvr.onrender.com/capture", {
-        method: "POST",
+
+      // Convert the captured image to a Blob (if capturedImage is a URL or base64 string)
+      const response = await fetch(capturedImage);
+      const blob = await response.blob();
+
+      // Create FormData to send the image
+      const formData = new FormData();
+      formData.append("image", blob, "captured-image.jpg"); // Append the blob
+
+      // Send the image to the backend using Axios
+      const res = await axios.post("https://expirify-backend.onrender.com/scan", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data", // Use multipart/form-data for file uploads
         },
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        alert(`Image captured successfully: ${data.message}`);
+      if (res.status === 200) {
+        alert(`Image captured successfully: ${res.data.message}`);
       } else {
-        alert(`Failed to capture image: ${data.message}`);
+        alert(`Failed to capture image: ${res.data.message}`);
       }
 
       setSending(false); // Reset sending state
