@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://expirify-backend.onrender.com', 
+    baseURL: 'http://192.168.24.190:3000/', 
     headers: {
         'Content-Type': 'application/json',
     },
