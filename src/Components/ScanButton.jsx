@@ -50,7 +50,9 @@ function CaptureButton() {
 
       // Create FormData to send the image
       const formData = new FormData();
+      console.log(blob);
       formData.append("image", blob, "captured-image.jpg"); // Append the blob
+      console.log(formData);
 
       // Send the image to the backend using Axios
       const res = await axios.post("/scan", formData, {
